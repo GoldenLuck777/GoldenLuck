@@ -84,6 +84,58 @@ button[type="submit"]:hover { background:var(--accent-hover); }
 @media(max-width:768px){
   #cart-panel { width:100%; }
 }
+  body {
+  min-height: 100vh; /* zapewnia pełną wysokość ekranu */
+  margin: 0;
+  padding: 0;
+  font-family: Inter, system-ui, sans-serif;
+  color: #fff;
+  background: linear-gradient(
+    180deg,
+    #000 0%,       /* czarny u góry */
+    #a38300 25%,   /* złoty w 1/4 wysokości */
+    #000 90%       /* czarny u dołu */
+  );
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* ultra-szerokie ekrany > 2000px */
+@media (min-width: 2000px) {
+  body {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #a38300 20%,
+      #000 95%
+    );
+  }
+}
+
+/* średnie ekrany (tablet, laptop) */
+@media (max-width: 1200px) {
+  body {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #a38300 25%,
+      #000 90%
+    );
+  }
+}
+
+/* małe ekrany (telefon) */
+@media (max-width: 768px) {
+  body {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #a38300 30%,
+      #000 95%
+    );
+  }
+}
+
 </style>
 </head>
 <body>
@@ -179,3 +231,4 @@ updateCartPanel();
 
 </body>
 </html>
+
