@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gloden Luck/Zamowienie</title>
+<style>
+  :root {
+    --bg: background: #000000;background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(163, 131, 0, 1) 24%, rgba(0, 0, 0, 1) 90%);
+    --panel: #1e1e1e;
+    --accent: #b8860b;
+    --muted: #b0b0b0;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    background: var(--bg);
+    color: white;
+  }
+  header {
+  display: flex;
+  padding: 1.5rem 1%;
+  background: var(--panel);
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 1.5rem; flex: 1; min-width: 250px; }
+
+.logo { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+
+.ikona { width: 100%; height: auto; }
+
+.header h1 { margin:0; font-size: clamp(1.4rem, 2vw, 2rem); letter-spacing: 0.6px; }
+
+.header p { margin:0; font-size: clamp(0.9rem, 1.2vw, 1rem); color: var(--muted); }
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 60px);
+  }
+  nav.side {
+    width: 200px;
+    background: var(--panel);
+    padding: 1rem;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #2c2c2c;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+  }
+  .nav-btn:hover {
+    background: var(--accent);
+    color: black;
+  }
+  main.content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  form {
+    background: var(--panel);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  }
+  form h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+  }
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--muted);
+  }
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #2c2c2c;
+    color: white;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  button[type="submit"] {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--accent);
+    color: black;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button[type="submit"]:hover {
+    background-color: #daa520;
+  }
+
+  .summary {
+    background: var(--panel);
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    margin-top: 2rem;
+    color: white;
+    font-size: 1rem;
+  }
+  .summary h3 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .summary ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 1rem 0;
+  }
+  .summary ul li {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 6px 0;
+  }
+  .summary ul li:first-child {
+    list-style-type: "🔷";
+    color: var(--accent);
+  }
+  .summary ul li:not(:first-child) {
+    list-style-type: "⚪";
+  }
+  .summary strong {
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <img src="logo.png" alt="logo" class="ikona">
+    </div>
+    <div class="header">
+      <h1>GOLDEN LUCK</h1>
+      <p>Sklep z e-bookami o kasynie</p>
+    </div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="side">
+    <a href="index.html" class="nav-btn">Wróć</a>
+  </nav>
+  <main class="content">
+    <!-- Formularz -->
+    <form action="https://formsubmit.co/goldenbethub@gmail.com" method="POST">
+      <h2>Wypełnij formularz</h2>
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value="http://127.0.0.1:5500/dziekujemy.html" />
+
+      <div class="form-group">
+        <label for="fname">Imię:</label>
+        <input type="text" id="fname" name="Imię" required />
+      </div>
+      <div class="form-group">
+        <label for="lname">Nazwisko:</label>
+        <input type="text" id="lname" name="Nazwisko" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Adres e-mail:</label>
+        <input type="email" id="email" name="Email" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Numer telefonu:</label>
+        <input type="tel" id="phone" name="Telefon" required pattern="[0-9+ ]+" />
+      </div>
+      <div class="form-group">
+        <label for="info">Dodatkowe informacje (opcjonalnie):</label>
+        <textarea id="info" name="Dodatkowe informacje" placeholder="Wpisz dodatkowe informacje..."></textarea>
+      </div>
+
+      <!-- Ukryte pole z podsumowaniem zamówienia -->
+      <textarea name="Podsumowanie zamówienia" id="order-summary" style="display:none;"></textarea>
+
+      <button type="submit">Wyślij zamówienie</button>
+    </form>
+
+    <!-- Podsumowanie zamówienia -->
+    <section class="summary" id="cart-summary">
+      <h3><strong>Podsumowanie zamówienia</strong></h3>
+      <ul id="cart-items">
+        <!-- Produkty z koszyka zostaną tu dodane przez JS -->
+      </ul>
+      <p id="total-price"><strong>Łączna kwota: 0 zł</strong></p>
+    </section>
+  </main>
+</div>
+
+<!-- Skrypt do podsumowania i wysyłki -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const cartList = document.getElementById("cart-items");
+    const totalPriceElement = document.getElementById("total-price");
+    const hiddenSummary = document.getElementById("order-summary");
+
+    let total = 0;
+    let summaryText = "";
+
+    cartItems.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.textContent = `${item.name} — ${item.price} zł`;
+      cartList.appendChild(li);
+
+      total += parseFloat(item.price);
+      summaryText += `${item.name} — ${item.price} zł\n`;
+    });
+
+    totalPriceElement.innerHTML = `<strong>Łączna kwota: ${total.toFixed(2)} zł</strong>`;
+    summaryText += `\nŁączna kwota: ${total.toFixed(2)} zł`;
+
+    // Ustawiamy ukryte pole formularza
+    hiddenSummary.value = summaryText;
+  });
+
+  // Przed wysłaniem formularza upewnij się, że dane są w textarea
+  const form = document.querySelector("form");
+  form.addEventListener("submit", () => {
+    const hiddenSummary = document.getElementById("order-summary");
+    if (!hiddenSummary.value.trim()) {
+      // Jeśli coś pójdzie nie tak, zrób awaryjne podsumowanie
+      hiddenSummary.value = "Brak danych o zamówieniu (błąd).";
+    }
+  });
+</script>
+</body>
+</html>
