@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Golden Luck — Sklep z e-bookami</title>
+<link rel="icon" type="image/svg+xml" href="logo.png">
+<style>
+:root {
+  --bg: background: #000000;background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(163, 131, 0, 1) 24%, rgba(0, 0, 0, 1) 90%);
+  --panel: #1e1e1e;
+  --accent: #b8860b;
+  --muted: #b0b0b0;
+  --btn-bg: #b8860b;
+  --btn-hover: #daa520;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+  color: #fff;
+  background: var(--bg);
+}
+
+header {
+  display: flex;
+  padding: 1.5rem 1%;
+  background: var(--panel);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand { display: flex; align-items: center; gap: 1.5rem; flex: 1; min-width: 250px; }
+.logo { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+.ikona { width: 100%; height: auto; }
+
+.header h1 { margin:0; font-size: clamp(1.4rem, 2vw, 2rem); letter-spacing: 0.6px; }
+.header p { margin:0; font-size: clamp(0.9rem, 1.2vw, 1rem); color: var(--muted); }
+
+.cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  cursor: pointer;
+  color: var(--accent);
+  min-width: 160px;
+}
+
+.koszyk-icon { width: 35px; height: 35px; }
+
+.layout { display: flex; flex-direction: row; min-height: calc(100vh - 120px); }
+
+nav.side {
+  width: 20%;
+  min-width: 180px;
+  background: var(--panel);
+  border-right: 1px solid rgba(255,255,255,0.05);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #2c2c2c;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.nav-btn:hover { background: var(--accent); color: #000; }
+
+main.content { flex: 1; padding: 2%; overflow: auto; }
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  justify-content: center;
+  align-items: stretch;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+  padding: 1.5rem;
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+}
+
+.card h2 { margin: 0 0 12px 0; font-size: 1.2rem; color: var(--accent); text-shadow: none; }
+.muted { color: var(--muted); font-size: 0.95rem; }
+
+.add-btn, .more-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  cursor: pointer;
+  font-weight: 600;
+  background: var(--btn-bg);
+  transition: background 0.3s;
+}
+
+.add-btn:hover, .more-btn:hover { background: var(--btn-hover); color: #fff; }
+
+.add-btn.added { animation: pulse 0.4s ease; }
+
+@keyframes pulse {
+  0% { transform: scale(1); background-color: var(--btn-bg); }
+  50% { transform: scale(1.1); background-color: var(--btn-hover); }
+  100% { transform: scale(1); background-color: var(--btn-bg); }
+}
+
+.btn-container { margin-top: auto; padding-top: 1rem; display: flex; gap: 10px; justify-content: center; }
+
+.full-description { max-height: 0; overflow: hidden; padding: 0; transition: max-height 0.5s ease, padding 0.5s ease; }
+.full-description.show { padding: 10px 0; }
+
+/* Panel koszyka */
+#cart-panel {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 350px;
+  height: 100%;
+  background: #1e1e1e;
+  color: #fff;
+  box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+  transition: right 0.4s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+#cart-panel.open { right: 0; }
+
+.cart-header { display: flex; justify-content: space-between; align-items: center; }
+#close-cart { cursor: pointer; font-size: 1.5rem; }
+
+#cart-items { flex: 1; overflow-y: auto; margin-top: 10px; }
+
+.cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: #2a2a2a; padding: 8px; border-radius: 8px; }
+.remove-btn { cursor: pointer; background: red; border: none; border-radius: 6px; color: #fff; padding: 2px 6px; font-size: 0.9rem; }
+
+.cart-footer { margin-top: 10px; }
+#checkout-btn { width: 100%; padding: 10px; border: none; border-radius: 8px; background: var(--accent); color: #000; font-weight: bold; cursor: pointer; }
+#checkout-btn:hover { background: var(--btn-hover); color: #fff; }
+
+.featured-card {
+  max-width: 500px;
+  margin: 0 auto 30px auto;
+  padding: 2rem;
+  background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+  border: 2px solid var(--accent);
+}
+
+/* Układ dwóch div obok siebie */
+.container { display: flex; width: 100%; }
+.left-panel { width: 40%; background-color: #1e1e1e; padding: 20px; box-sizing: border-box; border-right: 1px solid rgba(255, 255, 255, 0.05); }
+.right-panel { flex: 1; background-color: #000000; color: #fff; padding: 20px; box-sizing: border-box; height: 100vh; }
+
+/* RESPONSYWNOŚĆ */
+@media (max-width: 1024px) {
+  .layout { flex-direction: column; }
+  nav.side { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); flex-direction: row; overflow-x: auto; }
+  nav.side .nav-item { flex: 1 0 auto; }
+  main.content { padding: 1rem; }
+  .card { min-height: auto; }
+  .left-panel, .right-panel { width: 100%; height: auto; border-right: none; }
+}
+
+@media (max-width: 600px) {
+  .btn-container { flex-direction: column; gap: 8px; }
+  .header h1 { font-size: 1.5rem; }
+  .header p { font-size: 0.9rem; }
+}
+body {
+  min-height: 100vh; /* zapewnia pełną wysokość ekranu */
+  margin: 0;
+  padding: 0;
+  font-family: Inter, system-ui, sans-serif;
+  color: #fff;
+  background: linear-gradient(
+    180deg,
+    #000 0%,       /* czarny u góry */
+    #a38300 25%,   /* złoty w 1/4 wysokości */
+    #000 90%       /* czarny u dołu */
+  );
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* ultra-szerokie ekrany > 2000px */
+@media (min-width: 2000px) {
+  body {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #a38300 20%,
+      #000 95%
+    );
+  }
+}
+
+/* średnie ekrany (tablet, laptop) */
+@media (max-width: 1200px) {
+  body {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #a38300 25%,
+      #000 90%
+    );
+  }
+}
+
+/* małe ekrany (telefon) */
+@media (max-width: 768px) {
+  body {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #a38300 30%,
+      #000 95%
+    );
+  }
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <img src="logo.png" alt="logo" class="ikona">
+    </div>
+    <div class="header">
+      <h1>GOLDEN LUCK</h1>
+      <p>Sklep z e-bookami o kasynie</p>
+    </div>
+  </div>
+  <div class="cart" id="cart">
+      <img src="images.png" alt="koszyk" class="koszyk-icon" id="cart-icon">
+      Koszyk: 0 zł
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="side" id="sidebar" aria-label="Nawigacja">
+    <div class="nav-item"><button class="nav-btn" type="button">Strona główna</button></div>
+    <div class="nav-item"><button class="nav-btn" type="button" id="show-offers">Co oferujemy</button></div>
+    <div class="nav-item"><button class="nav-btn" type="button">Czemu warto?</button></div>
+    <div class="nav-item"><button class="nav-btn" type="button">Kim jesteśmy?</button></div>
+    <div class="nav-item" style="margin-top:auto;"><button class="nav-btn" type="button" id="contact-btn">Kontakt</button></div>
+  </nav>
+
+  <main class="content" id="main-content">
+    <div class="card" id="panel">
+      <h2 id="panel-title">Wybierz e-book z listy</h2>
+      <div id="panel-body">
+        <p class="muted">Kliknij w przycisk "Co oferujemy", aby zobaczyć dostępne e-booki.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Panel koszyka -->
+<div id="cart-panel">
+  <div class="cart-header">
+    <h2>Koszyk</h2>
+    <span id="close-cart">&times;</span>
+  </div>
+  <div id="cart-items"></div>
+  <div class="cart-footer">
+    <p>Suma: <span id="cart-total">0</span> zł</p>
+    <button id="checkout-btn"><a href="zamow.html">Zamów</a></button>
+  </div>
+</div>
+
+<script>
+const mainContent = document.getElementById('main-content');
+const navBtns = document.querySelectorAll('.nav-btn');
+const cart = document.getElementById('cart');
+const cartIcon = document.getElementById('cart-icon');
+const cartPanel = document.getElementById('cart-panel');
+const closeCart = document.getElementById('close-cart');
+const cartItemsContainer = document.getElementById('cart-items');
+const cartTotalEl = document.getElementById('cart-total');
+
+let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+let total = 0;
+
+function updateCart() {
+  cartItemsContainer.innerHTML = '';
+  total = 0;
+  cartItems.forEach((item,index)=>{
+    total += item.price;
+    const div = document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML = `<span>${item.name} (${item.price} zł)</span><button class="remove-btn" data-index="${index}">X</button>`;
+    cartItemsContainer.appendChild(div);
+  });
+  cartTotalEl.textContent = total;
+  cart.innerHTML=`<img src="images.png" alt="koszyk" class="koszyk-icon" id="cart-icon">Koszyk: ${total} zł`;
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+  document.querySelectorAll('.remove-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      cartItems.splice(btn.dataset.index,1);
+      updateCart();
+    });
+  });
+}
+
+function addToCart(name,price,btn){
+  cartItems.push({name,price});
+  updateCart();
+  btn.classList.add('added');
+  setTimeout(()=>btn.classList.remove('added'),400);
+}
+
+cart.addEventListener('click', () => {
+  cartPanel.classList.add('open');
+});
+
+// zachowujemy osobną ikonę tylko do animacji, ale kliknięcie działa na całym obszarze
+cartIcon.addEventListener('click', (e) => {
+  e.stopPropagation(); // nie wywołuje zdublowanego eventu
+  cartPanel.classList.add('open');
+});
+
+closeCart.addEventListener('click', () => cartPanel.classList.remove('open'));
+
+
+/* Nawigacja */
+const homeBtn = navBtns[0];
+const offersBtn = navBtns[1];
+const whyBtn = navBtns[2];
+const aboutBtn = navBtns[3];
+
+function showHome(){
+  mainContent.innerHTML = `
+    <h1 style="text-align:center; margin-bottom: 30px;">Polecamy</h1>
+
+    <div class="card featured-card">
+      <h2>🟡 Pakiet Średnio Zaawansowany – eBook</h2>
+      <p class="muted">Dla graczy z doświadczeniem.</p>
+      <div class="full-description show" style="max-height: none;">
+        Rozwiń swoje umiejętności i poznaj skuteczne strategie gry. Idealny dla graczy, którzy chcą lepiej zarządzać budżetem i ryzykiem.
+      </div>
+      <div class="btn-container">
+        <button class="more-btn">Więcej</button>
+        <button class="add-btn">Dodaj do koszyka (59 zł)</button>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 30px;">
+      <p>Kliknij w przycisk <strong>"Co oferujemy"</strong>, aby zobaczyć wszystkie dostępne e-booki.</p>
+    </div>
+  `;
+
+  // Obsługa przycisków
+  const moreBtn = mainContent.querySelector('.more-btn');
+  const fullDesc = mainContent.querySelector('.full-description');
+  const addBtn = mainContent.querySelector('.add-btn');
+
+  moreBtn.addEventListener('click', () => {
+    fullDesc.classList.toggle('show');
+    moreBtn.textContent = fullDesc.classList.contains('show') ? 'Mniej' : 'Więcej';
+    fullDesc.style.maxHeight = fullDesc.classList.contains('show') ? fullDesc.scrollHeight + 10 + 'px' : '0';
+  });
+
+  addBtn.addEventListener('click', () => {
+    addToCart('🟡 Pakiet Średnio Zaawansowany – eBook', 59, addBtn);
+  });
+}
+
+
+
+function showWhy(){
+  mainContent.innerHTML=`<div class="card"><h1>Czemu warto?</h1><p>Nasze e-booki pomogą Ci zrozumieć strategie kasynowe i zwiększyć szanse na wygraną.</p></div>`;
+}
+
+function showAbout(){
+  mainContent.innerHTML=`<div class="card"><h1>Kim jesteśmy?</h1><p>Jesteśmy pasjonatami gier kasynowych, którzy chcą dzielić się wiedzą i strategiami poprzez e-booki.</p></div>`;
+}
+
+function displayEbooks(){
+  mainContent.innerHTML='';
+  const header=document.createElement('h1');
+  header.textContent='Nasze Pakiety';
+  header.style.textAlign='center';
+  header.style.marginBottom='20px';
+  mainContent.appendChild(header);
+
+  const packages=[
+    { name: "🟢 Pakiet Podstawowy – eBook", shortDesc: "Idealny dla początkujących graczy.", longDesc: "Poznaj podstawy gier kasynowych i zacznij grać świadomie. Dowiedz się, jak działają najpopularniejsze gry i unikaj błędów początkujących.", price: 29 },
+    { name: "🟡 Pakiet Średnio Zaawansowany – eBook", shortDesc: "Dla graczy z doświadczeniem.", longDesc: "Rozwiń swoje umiejętności i poznaj skuteczne strategie gry. Idealny dla graczy, którzy chcą lepiej zarządzać budżetem i ryzykiem.", price: 59 },
+    { name: "🔴 Pakiet Zaawansowany – eBook", shortDesc: "Dla zaawansowanych graczy.", longDesc: "Zostań ekspertem i poznaj tajniki profesjonalnej gry. Zaawansowane techniki, analiza przewagi i psychologia zwycięstwa.", price: 89 }
+  ];
+
+  const oldEbooks=[
+    {name: "♠️ Pakiet Blackjack", price: 39, shortDesc: "Poznaj podstawy Blackjacka.", longDesc: "Opanuj strategię jednej z najpopularniejszych gier karcianych. Naucz się liczyć karty i grać jak zawodowiec."},
+    {name: "♦️ Pakiet Ruletka", price: 59, shortDesc: "Zwiększ swoje szanse w ruletce.", longDesc: "Poznaj systemy, które pomagają grać mądrzej. Zrozum mechanikę stołu i zasady obstawiania."},
+    {name: "♥️ Pakiet Baccarat", price: 69, shortDesc: "Tajniki gry w Baccarat.", longDesc: "Wejdź w świat eleganckiej gry i dowiedz się, jak grać strategicznie."},
+    {name: "🎰 Pakiet Sloty", price: 39, shortDesc: "Sekrety automatów slotowych.", longDesc: "Poznaj zasady wygrywania z głową. Dowiedz się, które sloty są najbardziej opłacalne."}
+  ];
+
+  function createCards(items){
+    const container=document.createElement('div');
+    container.classList.add('cards-grid');
+    mainContent.appendChild(container);
+
+    items.forEach(item=>{
+      const card=document.createElement('div');
+      card.classList.add('card');
+      card.innerHTML=`<h2>${item.name}</h2><p class="muted">${item.shortDesc}</p><div class="full-description">${item.longDesc}</div><div class="btn-container"><button class="more-btn">Więcej</button><button class="add-btn">Dodaj do koszyka (${item.price} zł)</button></div>`;
+      const moreBtn=card.querySelector('.more-btn');
+      const fullDesc=card.querySelector('.full-description');
+      const addBtn=card.querySelector('.add-btn');
+
+      moreBtn.addEventListener('click',()=>{
+        fullDesc.classList.toggle('show');
+        moreBtn.textContent=fullDesc.classList.contains('show')?'Mniej':'Więcej';
+        fullDesc.style.maxHeight=fullDesc.classList.contains('show')?fullDesc.scrollHeight+10+'px':'0';
+      });
+
+      addBtn.addEventListener('click',()=>addToCart(item.name,item.price,addBtn));
+      container.appendChild(card);
+    });
+  }
+
+  createCards(packages);
+  const offerText=document.createElement('h2');
+  offerText.textContent='W ofercie również mamy…';
+  offerText.style.textAlign='center';
+  offerText.style.marginTop='40px';
+  mainContent.appendChild(offerText);
+  createCards(oldEbooks);
+}
+
+homeBtn.addEventListener('click',showHome);
+offersBtn.addEventListener('click',displayEbooks);
+whyBtn.addEventListener('click',showWhy);
+aboutBtn.addEventListener('click',showAbout);
+const contactBtn = document.getElementById('contact-btn'); contactBtn.addEventListener('click', showContact);
+
+
+function showContact() {
+  mainContent.innerHTML = `
+    <div class="card" style="max-width:600px; margin:0 auto;">
+      <h1 style="text-align:center;">Kontakt</h1>
+      <p class="muted" style="text-align:center;">Masz pytania lub potrzebujesz pomocy? Skontaktuj się z nami!</p>
+
+      <form id="contact-form" 
+            action="https://formsubmit.co/kontakt@perfectplayer.pl" 
+            method="POST" 
+            style="display:flex; flex-direction:column; gap:15px; padding-top:30px; width:100%; height:500px">
+
+        <!-- Ukryte pola konfiguracji FormSubmit -->
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_subject" value="Nowa wiadomość z Perfect Player!">
+
+        <!-- Pola widoczne -->
+        <input type="text" 
+               name="name" 
+               placeholder="Twoje imię" 
+               required 
+               style="padding:14px; border-radius:8px; border:none; font-size:1rem; width:100%;">
+
+        <input type="email" 
+               name="email" 
+               placeholder="Twój email" 
+               required 
+               style="padding:14px; border-radius:8px; border:none; font-size:1rem; width:100%;">
+
+        <textarea name="message" 
+                  rows="8" 
+                  placeholder="Twoja wiadomość..." 
+                  required 
+                  style="padding:18px; border-radius:8px; border:none; font-size:1rem; resize:vertical; width:100%; min-height:300px;"></textarea>
+
+        <button type="submit" 
+                class="add-btn" 
+                id="send-btn" 
+                style="width:100%; padding:14px; font-size:1rem;">
+          Wyślij
+        </button>
+      </form>
+
+      <p id="status-message" class="muted" style="margin-top:15px; text-align:center;"></p>
+    </div>
+  `;
+
+  const form = document.getElementById('contact-form');
+  const sendBtn = document.getElementById('send-btn');
+  const statusMsg = document.getElementById('status-message');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = "Wysyłanie... ⏳";
+    statusMsg.textContent = "";
+
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(response => {
+      if (response.ok) {
+        statusMsg.textContent = "✅ Dziękujemy! Twoja wiadomość została wysłana.";
+        statusMsg.style.color = "#b8860b";
+        form.reset();
+      } else {
+        throw new Error("Błąd sieci");
+      }
+    })
+    .catch(() => {
+      statusMsg.textContent = "❌ Wystąpił błąd. Spróbuj ponownie później.";
+      statusMsg.style.color = "red";
+    })
+    .finally(() => {
+      sendBtn.disabled = false;
+      sendBtn.textContent = "Wyślij";
+    });
+  });
+}
+
+
+
+
+showHome();
+updateCart();
+</script>
+</body>
+</html>
