@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Golden Luck/Dziekujemy</title>
+  <style>
+body {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(163, 131, 0, 1) 40%, rgba(0, 0, 0, 1) 90%);
+  color: white;
+  font-family: "Inter", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+  padding: 20px; /* dla małych ekranów */
+}
+
+header {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.dzieki {
+  border: 2px solid #b8860b;
+  padding: 30px;
+  background: #1e1e1e;
+  color: #fff;
+  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: #b8860b;
+  color: black;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin-top: 20px;
+  width: 100%; /* zajmuje całą szerokość kontenera */
+  max-width: 200px; /* ograniczenie maksymalnej szerokości */
+}
+
+button:hover {
+  background-color: #d4a017;
+  transform: scale(1.05);
+}
+
+/* Responsywność */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .dzieki {
+    padding: 20px;
+  }
+
+  button {
+    max-width: 100%;
+  }
+}
+</style>
+
+</head>
+<body>
+  <header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <img src="logo.png" alt="logo" class="ikona">
+    </div>
+    <div class="header">
+      <h1>GOLDEN LUCK</h1>
+      <p>Sklep z e-bookami o kasynie</p>
+    </div>
+  </div>
+</header>
+  <div class="dzieki">
+  <h1>Dziękujemy za zakup!</h1>
+  <p>Twoje zamowenie zostało złożone pomyślnie.</p>
+  <button onclick="window.location.href='index.html'">Powrót do strony głównej</button>
+</div>
+</body>
+</html>
